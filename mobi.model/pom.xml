@@ -1,28 +1,29 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>mobi</groupId>
-    <artifactId>mobi</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>mobi</groupId>
+        <artifactId>mobi</artifactId>
+        <version>1.0-mobi</version>
+    </parent>
 
-  <artifactId>mobi.model</artifactId>
-  <name>mobi.model</name>
-  <packaging>jar</packaging>
-  <url>http://www.example.com</url>
+    <artifactId>mobi.model</artifactId>
+    <name>mobi.model</name>
+    <packaging>jar</packaging>
+    <url>http://www.example.com</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
-  <dependencies>
-    <!-- mobi.model cần các tiện ích từ mobi.common -->
-    <dependency>
-      <groupId>mobi</groupId>
-      <artifactId>mobi.common</artifactId>
-      <version>${project.version}</version>
-    </dependency>
-  </dependencies>
+    <dependencies>
+        <!-- mobi.model cần các tiện ích từ mobi.common -->
+        <dependency>
+            <groupId>mobi</groupId>
+            <artifactId>mobi.common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>
