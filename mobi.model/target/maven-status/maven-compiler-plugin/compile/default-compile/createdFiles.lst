@@ -1,2 +1,4 @@
+mobi\model\entity\auth\Role.class
+mobi\model\entity\auth\ERole.class
 mobi\model\entity\Product.class
-mobi\model\User.class
+mobi\model\entity\auth\User.class
