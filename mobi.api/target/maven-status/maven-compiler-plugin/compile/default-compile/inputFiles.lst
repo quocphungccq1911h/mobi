@@ -1,4 +1,5 @@
 E:\source\JAVA\mobi\mobi.api\src\main\java\mobi\api\ApiApplication.java
+E:\source\JAVA\mobi\mobi.api\src\main\java\mobi\api\config\RedisConfig.java
 E:\source\JAVA\mobi\mobi.api\src\main\java\mobi\api\controller\ProductController.java
 E:\source\JAVA\mobi\mobi.api\src\main\java\mobi\api\repository\ProductRepository.java
 E:\source\JAVA\mobi\mobi.api\src\main\java\mobi\api\service\ProductService.java

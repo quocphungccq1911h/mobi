@@ -1,4 +1,5 @@
 mobi\api\service\ProductService.class
+mobi\api\config\RedisConfig.class
 mobi\api\repository\ProductRepository.class
 mobi\api\ApiApplication.class
 mobi\api\controller\ProductController.class
