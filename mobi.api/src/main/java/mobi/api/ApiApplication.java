@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Lớp khởi chạy chính cho ứng dụng API, bây giờ là một ứng dụng Spring Boot.
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @EntityScan(basePackages = "mobi.model.entity")
 @EnableJpaRepositories(basePackages = "mobi.api.repository")
-@RestController
 @EnableCaching
 public class ApiApplication {
     public static void main(String[] args) {

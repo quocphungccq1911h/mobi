@@ -40,6 +40,12 @@ public class ProductController {
     @PostMapping
     public ResponseEntity<Product> createProduct(@RequestBody Product product) {
         Product savedProduct = productService.createProduct(product);
-        return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        // Đảm bảo savedProduct không null trước khi trả về
+        if (savedProduct != null) {
+            return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
+        } else {
+            // Trường hợp lỗi khi lưu sản phẩm, trả về lỗi server
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
