@@ -1,5 +1,10 @@
+mobi\api\security\services\UserDetailsServiceImpl.class
+mobi\api\repository\RoleRepository.class
 mobi\api\service\ProductService.class
 mobi\api\config\RedisConfig.class
+mobi\api\security\services\UserDetailsImpl.class
+mobi\api\repository\UserRepository.class
+mobi\api\security\jwt\JwtUtils.class
 mobi\api\repository\ProductRepository.class
 mobi\api\ApiApplication.class
 mobi\api\controller\ProductController.class

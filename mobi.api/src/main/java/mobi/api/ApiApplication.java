@@ -1,7 +1,6 @@
 package mobi.api;
 
 import mobi.common.utils.CommonUtils;
-import mobi.model.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
