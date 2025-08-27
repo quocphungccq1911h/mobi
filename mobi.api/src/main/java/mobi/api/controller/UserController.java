@@ -1,15 +1,20 @@
 package mobi.api.controller;
 
 import jakarta.validation.Valid;
+import mobi.api.payload.request.PasswordResetRequest;
 import mobi.api.payload.request.UserUpdateRequest;
 import mobi.api.payload.response.MessageResponse;
+import mobi.api.repository.PasswordResetTokenRepository;
 import mobi.api.repository.RoleRepository;
 import mobi.api.repository.UserRepository;
 import mobi.api.security.services.UserDetailsImpl;
+import mobi.api.service.EmailService;
 import mobi.model.entity.auth.ERole;
+import mobi.model.entity.auth.PasswordResetToken;
 import mobi.model.entity.auth.Role;
 import mobi.model.entity.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +44,15 @@ public class UserController {
 
     @Autowired
     PasswordEncoder encoder;
+
+    @Autowired
+    PasswordResetTokenRepository passwordResetToken;
+
+    @Autowired
+    EmailService emailService;
+
+    @Value("${mobi.app.frontendUrl}")
+    private String frontendUrl;
 
     /**
      * Lấy tất cả người dùng. Chỉ ADMIN mới có thể truy cập.
@@ -172,4 +186,77 @@ public class UserController {
         userRepository.deleteById(id);
         return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
     }
+
+    /**
+     * API cho phép người dùng thay đổi mật khẩu của chính họ.
+     * POST /api/users/change-password
+     *
+     * @param currentPassword Mật khẩu hiện tại của người dùng.
+     * @param newPassword     Mật khẩu mới.
+     * @param userPrincipal   Thông tin người dùng đã xác thực.
+     * @return ResponseEntity với thông báo thành công hoặc lỗi.
+     */
+    @PostMapping("/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<?> changePassword(@RequestParam String currentPassword, @RequestParam String newPassword, @AuthenticationPrincipal UserDetailsImpl userPrincipal) {
+        Optional<User> userOptional = userRepository.findById(userPrincipal.getId());
+        if (userOptional.isEmpty()) {
+            return new ResponseEntity<>(new MessageResponse("User not found."), HttpStatus.NOT_FOUND);
+        }
+        User user = userOptional.get();
+        if (!encoder.matches(currentPassword, user.getPassword())) {
+            return new ResponseEntity<>(new MessageResponse("Invalid current password."), HttpStatus.BAD_REQUEST);
+        }
+        user.setPassword(encoder.encode(newPassword));
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("Password changed successfully!"));
+    }
+
+    /**
+     * API gửi token khôi phục mật khẩu đến email người dùng.
+     * POST /api/users/forgot-password?email=...
+     *
+     * @param email Email của người dùng.
+     * @return ResponseEntity với thông báo thành công hoặc lỗi.
+     */
+    @PostMapping("/forgot-password")
+    public ResponseEntity<?> forgotPassword(@RequestParam String email) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if (userOptional.isEmpty()) {
+            return new ResponseEntity<>(new MessageResponse("If your email exists in our system, a password reset link has been sent."), HttpStatus.OK);
+        }
+
+        User user = userOptional.get();
+        PasswordResetToken token = new PasswordResetToken(user);
+        passwordResetToken.save(token);
+
+        String resetLink = frontendUrl + "/reset-password?token=" + token.getToken();
+        String emailContent = "Để khôi phục mật khẩu, vui lòng truy cập liên kết sau: " + resetLink;
+
+        emailService.sendEmail(user.getEmail(), "Khôi phục mật khẩu", emailContent);
+        return ResponseEntity.ok(new MessageResponse("If your email exists in our system, a password reset link has been sent."));
+    }
+
+    /**
+     * API đặt lại mật khẩu bằng token.
+     * POST /api/users/reset-password
+     *
+     * @param request DTO chứa token và mật khẩu mới.
+     * @return ResponseEntity với thông báo thành công hoặc lỗi.
+     */
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetRequest request) {
+        Optional<PasswordResetToken> tokenOptional = passwordResetToken.findByToken(request.getToken());
+
+        if (tokenOptional.isEmpty() || tokenOptional.get().isExpired()) {
+            return new ResponseEntity<>(new MessageResponse("Invalid or expired password reset token."), HttpStatus.BAD_REQUEST);
+        }
+
+        User user = tokenOptional.get().getUser();
+        user.setPassword(encoder.encode(request.getNewPassword()));
+
+        passwordResetToken.delete(tokenOptional.get()); // Xóa token sau khi đã sử dụng
+        return ResponseEntity.ok(new MessageResponse("Password has been reset successfully."));
+    }
+
 }

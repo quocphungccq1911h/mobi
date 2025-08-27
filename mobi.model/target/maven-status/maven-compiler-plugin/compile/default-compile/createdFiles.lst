@@ -1,3 +1,4 @@
+mobi\model\entity\auth\PasswordResetToken.class
 mobi\model\entity\auth\Role.class
 mobi\model\entity\auth\ERole.class
 mobi\model\entity\Product.class
