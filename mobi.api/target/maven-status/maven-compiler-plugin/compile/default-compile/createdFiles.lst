@@ -17,9 +17,11 @@ mobi\api\repository\UserRepository.class
 mobi\api\repository\ProductRepository.class
 mobi\api\controller\auth\AuthController.class
 mobi\api\repository\PasswordResetTokenRepository.class
+mobi\api\kafka\PasswordResetProducer.class
 mobi\api\service\ProductService.class
 mobi\api\config\DataLoader.class
 mobi\api\payload\request\PasswordResetRequest.class
 mobi\api\service\EmailService.class
 mobi\api\ApiApplication.class
 mobi\api\payload\response\JwtResponse.class
+mobi\api\config\KafkaTopicConfig.class

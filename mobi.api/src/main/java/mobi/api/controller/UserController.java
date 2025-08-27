@@ -1,6 +1,7 @@
 package mobi.api.controller;
 
 import jakarta.validation.Valid;
+import mobi.api.kafka.PasswordResetProducer;
 import mobi.api.payload.request.PasswordResetRequest;
 import mobi.api.payload.request.UserUpdateRequest;
 import mobi.api.payload.response.MessageResponse;
@@ -16,7 +17,6 @@ import mobi.model.entity.auth.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -49,6 +49,9 @@ public class UserController {
     PasswordResetTokenRepository passwordResetToken;
 
     @Autowired
+    PasswordResetProducer passwordResetProducer;
+
+    @Autowired
     EmailService emailService;
 
     @Value("${mobi.app.frontendUrl}")
@@ -63,6 +66,10 @@ public class UserController {
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<User>> getAllUsers() {
+        // Gửi message đến Kafka producer để xử lý bất đồng bộ
+        for (int i = 0; i < 100; i++) {
+            passwordResetProducer.sendMessage(i);
+        }
         List<User> users = userRepository.findAll();
         // Loại bỏ password trước khi trả data
         users.forEach(user -> user.setPassword(null));
@@ -246,6 +253,11 @@ public class UserController {
      */
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@Valid @RequestBody PasswordResetRequest request) {
+
+        // test kafka
+        // Gửi message đến Kafka producer để xử lý bất đồng bộ
+        passwordResetProducer.sendMessage(request.getNewPassword());
+
         Optional<PasswordResetToken> tokenOptional = passwordResetToken.findByToken(request.getToken());
 
         if (tokenOptional.isEmpty() || tokenOptional.get().isExpired()) {
