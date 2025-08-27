@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
@@ -41,6 +42,9 @@ public class AuthTokenFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userName); // Tải thông tin người dùng
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));  // Thiết lập ngữ cảnh bảo mật
+
+                // DÒNG QUAN TRỌNG NHẤT BỊ THIẾU TRONG LẦN CẬP NHẬT TRƯỚC
+                SecurityContextHolder.getContext().setAuthentication(authentication); // Thiết lập ngữ cảnh bảo mật
             }
         } catch (Exception e) {
             logger.error("Cannot set user authentication: {}", e.getMessage());

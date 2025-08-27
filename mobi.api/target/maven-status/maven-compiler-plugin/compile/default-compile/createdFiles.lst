@@ -13,6 +13,8 @@ mobi\api\security\services\UserDetailsServiceImpl.class
 mobi\api\service\ProductService.class
 mobi\api\config\RedisConfig.class
 mobi\api\config\DataLoader.class
+mobi\api\payload\request\UserUpdateRequest.class
+mobi\api\controller\UserController.class
 mobi\api\security\config\WebSecurityConfig.class
 mobi\api\ApiApplication.class
 mobi\api\payload\response\JwtResponse.class
