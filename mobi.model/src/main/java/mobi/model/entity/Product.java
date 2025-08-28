@@ -19,6 +19,12 @@ public class Product {
 
     private String description;
 
+    // THÊM MỚI: Quan hệ Many-to-One với Category
+    // Một sản phẩm thuộc về một danh mục (Category)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
+    private Category category;
+
     // Constructors
     public Product() {
     }
@@ -62,8 +68,23 @@ public class Product {
         this.description = description;
     }
 
+    // THÊM MỚI: Getter và Setter cho Category
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     @Override
     public String toString() {
-        return "Product{" + "id=" + id + ", name='" + name + '\'' + ", price=" + price + ", description='" + description + '\'' + '}';
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", description='" + description + '\'' +
+                ", category=" + (category != null ? category.getName() : "null") + // Hiển thị tên danh mục
+                '}';
     }
 }

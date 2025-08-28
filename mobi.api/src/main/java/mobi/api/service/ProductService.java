@@ -55,4 +55,42 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
+    /**
+     * Cập nhật sản phẩm hiện có.
+     * Khi cập nhật, cần xóa cache của "products" và cache của "product" cụ thể này.
+     *
+     * @param id             ID của sản phẩm cần cập nhật.
+     * @param productDetails Đối tượng Product với thông tin cập nhật.
+     * @return Optional chứa sản phẩm đã cập nhật.
+     */
+    @Caching(evict = {
+            @CacheEvict(value = "products", allEntries = true),
+            @CacheEvict(value = "product", key = "#id")
+    })
+    public Optional<Product> updateProduct(Long id, Product productDetails) {
+        return productRepository.findById(id).map(existingProduct -> {
+            System.out.println("Updating product in DB: " + existingProduct.getName() + " (Caching disabled)");
+            existingProduct.setName(productDetails.getName());
+            existingProduct.setPrice(productDetails.getPrice());
+            existingProduct.setDescription(productDetails.getDescription());
+            return productRepository.save(existingProduct);
+        });
+    }
+
+    /**
+     * Xóa sản phẩm theo ID.
+     * Khi xóa, cần xóa cache của "products" và cache của "product" cụ thể này.
+     *
+     * @param id ID của sản phẩm cần xóa.
+     */
+    @Caching(evict = {
+            @CacheEvict(value = "products", allEntries = true),
+            @CacheEvict(value = "product", key = "#id")
+    })
+    public void deleteProduct(Long id) {
+        System.out.println("Deleting product from DB with ID: " + id + " (Caching disabled)");
+        productRepository.deleteById(id);
+    }
+    
+
 }
