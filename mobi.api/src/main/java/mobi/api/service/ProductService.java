@@ -9,6 +9,7 @@ import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -47,4 +48,11 @@ public class ProductService {
         System.out.println("Saving product to DB: " + product.getName());
         return productRepository.save(product);
     }
+
+    @Cacheable(value = "productById", key = "#id")
+    public Optional<Product> getProductById(Long id) {
+        System.out.println("Find product from DB: " + id);
+        return productRepository.findById(id);
+    }
+
 }
