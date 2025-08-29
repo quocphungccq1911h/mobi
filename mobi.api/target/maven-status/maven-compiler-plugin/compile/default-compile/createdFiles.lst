@@ -1,4 +1,5 @@
 mobi\api\repository\RoleRepository.class
+mobi\api\service\CategoryService.class
 mobi\api\payload\response\MessageResponse.class
 mobi\api\security\jwt\AuthEntryPointJwt.class
 mobi\api\security\jwt\JwtUtils.class
@@ -8,6 +9,7 @@ mobi\api\security\jwt\AuthTokenFilter.class
 mobi\api\payload\request\SignupRequest.class
 mobi\api\security\services\UserDetailsServiceImpl.class
 mobi\api\config\RedisConfig.class
+mobi\api\controller\CategoryController.class
 mobi\api\payload\request\UserUpdateRequest.class
 mobi\api\controller\UserController.class
 mobi\api\security\config\WebSecurityConfig.class
