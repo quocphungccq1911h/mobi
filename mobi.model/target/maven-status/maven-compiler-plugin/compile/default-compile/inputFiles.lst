@@ -2,5 +2,8 @@ D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\auth\ERole.ja
 D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\auth\PasswordResetToken.java
 D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\auth\Role.java
 D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\auth\User.java
+D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\CartItem.java
 D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\Category.java
+D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\Order.java
+D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\OrderItem.java
 D:\personal\source\mobi\mobi.model\src\main\java\mobi\model\entity\Product.java

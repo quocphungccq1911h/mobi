@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity // Kích hoạt bảo mật dựa trên phương thức (@PreAuthorize, @PostAuthorize)
 public class WebSecurityConfig {
+
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -46,6 +47,7 @@ public class WebSecurityConfig {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
@@ -63,14 +65,17 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable) // Tắt CSRF (thường làm với stateless APIs và JWT)
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)) // Xử lý lỗi xác thực
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không sử dụng session (stateless).
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Không sử dụng session (stateless)
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/api/auth/**").permitAll() // Cho phép truy cập API đăng ký/đăng nhập
                                 .requestMatchers("/api/test/**").permitAll() // Cho phép truy cập các API test
                                 .requestMatchers("/api/products/**").permitAll() // Tạm thời cho phép truy cập products (sẽ bảo vệ sau)
+                                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**").permitAll() // CẬP NHẬT LẦN NỮA: Cho phép tất cả các đường dẫn liên quan đến Swagger
                                 .anyRequest().authenticated() // Tất cả các yêu cầu khác đều cần xác thực
                 );
+
         http.authenticationProvider(authenticationProvider()); // Đăng ký Authentication Provider
+
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class); // Thêm JWT filter trước UsernamePasswordAuthenticationFilter
 
         return http.build();

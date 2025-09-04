@@ -1,6 +1,9 @@
+mobi\model\entity\CartItem.class
+mobi\model\entity\Category.class
+mobi\model\entity\auth\User.class
+mobi\model\entity\OrderItem.class
+mobi\model\entity\Order.class
 mobi\model\entity\auth\PasswordResetToken.class
 mobi\model\entity\auth\Role.class
-mobi\model\entity\Category.class
 mobi\model\entity\auth\ERole.class
 mobi\model\entity\Product.class
-mobi\model\entity\auth\User.class

@@ -1,5 +1,6 @@
 package mobi.api.controller;
 
+import mobi.api.payload.request.ProductRequest;
 import mobi.api.service.ProductService;
 import mobi.model.entity.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +42,15 @@ public class ProductController {
      * Tạo sản phẩm mới.
      * POST /api/products
      *
-     * @param product Đối tượng Product cần tạo.
+     * @param productRequest Đối tượng Product cần tạo.
      * @return ResponseEntity chứa sản phẩm đã tạo và status CREATED.
      */
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> createProduct(@RequestBody Product product) {
-        System.out.println("ProductController: createProduct called with name: " + product.getName());
-        Product savedProduct = productService.createProduct(product);
+    public ResponseEntity<Product> createProduct(@RequestBody ProductRequest productRequest) {
+        System.out.println("ProductController: createProduct called with name: " + productRequest.getName());
+        Product savedProduct = productService.createProduct(productRequest);
         // Đảm bảo savedProduct không null trước khi trả về
         if (savedProduct != null) {
             return new ResponseEntity<>(savedProduct, HttpStatus.CREATED);
@@ -83,15 +84,15 @@ public class ProductController {
      * PUT /api/products/{id}
      *
      * @param id             ID của sản phẩm cần cập nhật.
-     * @param productDetails Đối tượng Product với thông tin cập nhật.
+     * @param productRequest Đối tượng Product với thông tin cập nhật.
      * @return ResponseEntity chứa sản phẩm đã cập nhật hoặc status NOT_FOUND.
      */
     @PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product productDetails) {
+    public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody ProductRequest productRequest) {
         System.out.println("ProductController: updateProduct called for ID: " + id);
-        Optional<Product> updatedProduct = productService.updateProduct(id, productDetails);
+        Optional<Product> updatedProduct = productService.updateProduct(id, productRequest);
         return updatedProduct.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
