@@ -33,4 +33,7 @@ export class AuthService {
         .includes(role) ?? false
     );
   }
+  isAuthenticated() {
+    return !!localStorage.getItem('access_token');
+  }
 }
