@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const adminLayoutRoutes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./admin-layout.component').then(m => m.AdminLayoutComponent),
+    loadComponent: () => import('./admin-layout/admin-layout').then(m => m.AdminLayout),
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'products' },
       { path: 'products', loadChildren: () => import('../../features/products/product.routes').then(m => m.PRODUCT_ROUTES) },
