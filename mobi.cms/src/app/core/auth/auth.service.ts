@@ -14,7 +14,7 @@ export class AuthService {
 
   login(userReq: UserRequest) {
     return this.http
-      .post<{ accessToken: string; user: User }>(`${environment.apiBaseUrl}/auth/login`, userReq)
+      .post<{ accessToken: string; user: User }>(`${environment.apiBaseUrl}/auth/signin`, userReq)
       .pipe(
         tap(({ accessToken, user }) => this.setSession(accessToken, user)),
         map(() => true)

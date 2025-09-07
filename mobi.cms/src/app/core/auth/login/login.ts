@@ -25,7 +25,7 @@ export class Login {
     this.error.set('');
 
     const userReq: UserRequest = {
-      username: this.username,
+      userName: this.username,
       password: this.password,
     };
 
