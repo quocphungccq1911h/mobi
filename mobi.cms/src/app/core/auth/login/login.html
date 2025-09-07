@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-sm bg-white rounded-2xl shadow-lg p-6">
+    <h2 class="text-2xl font-bold text-center text-gray-700 mb-6">Đăng nhập</h2>
+
+    <form (ngSubmit)="onSubmit()" class="space-y-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Tên đăng nhập</label>
+        <input
+          type="text"
+          [(ngModel)]="username"
+          name="username"
+          required
+          class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-600">Mật khẩu</label>
+        <input
+          type="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          class="mt-1 w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+        />
+      </div>
+
+      <button
+        type="submit"
+        [disabled]="loading()"
+        class="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition"
+      >
+        {{ loading() ? 'Đang đăng nhập...' : 'Đăng nhập' }}
+      </button>
+
+      <p *ngIf="error()" class="text-red-500 text-sm mt-2 text-center">{{ error() }}</p>
+    </form>
+  </div>
+</div>
